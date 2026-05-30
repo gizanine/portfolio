@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Giulia Zanine</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f3ef;
+      --warm-white: #faf9f7;
+      --ink: #1c1a18;
+      --mid: #6b6560;
+      --light: #b0aaa3;
+      --accent: #8c7b6e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 60px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: #e2ddd7; }
+
+    .nav-logo {
+      font-family: 'EB Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 48px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    /* MAIN LAYOUT */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* LEFT PANEL */
+    .left-panel {
+      padding: 160px 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #e0dbd4;
+      position: relative;
+    }
+
+    .left-top {}
+
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--light);
+    }
+
+    .contact-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 6vw, 88px);
+      font-weight: 300;
+      line-height: 1.0;
+      margin-bottom: 40px;
+    }
+    .contact-heading em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact-subtext {
+      font-family: 'EB Garamond', serif;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--mid);
+      max-width: 380px;
+    }
+
+    .left-bottom {
+      margin-top: 80px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-link-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid #e0dbd4;
+      text-decoration: none;
+      color: var(--ink);
+      transition: padding-left 0.3s ease;
+      cursor: pointer;
+    }
+    .contact-link-item:first-child { border-top: 1px solid #e0dbd4; }
+    .contact-link-item:hover { padding-left: 8px; }
+
+    .link-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 4px;
+    }
+    .link-value {
+      font-family: 'EB Garamond', serif;
+      font-size: 18px;
+    }
+
+    .link-arrow {
+      font-size: 18px;
+      color: var(--light);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .contact-link-item:hover .link-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* RIGHT PANEL — FORM */
+    .right-panel {
+      padding: 160px 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-heading {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 56px;
+    }
+
+    .form-group {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 12px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #cec9c2;
+      padding: 12px 0;
+      font-family: 'EB Garamond', serif;
+      font-size: 19px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.25s;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--light);
+      font-style: italic;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      color: var(--light);
+      font-style: italic;
+    }
+    .form-group select.filled { color: var(--ink); font-style: normal; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+
+    .submit-note {
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.05em;
+      font-style: italic;
+      font-family: 'EB Garamond', serif;
+    }
+
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 44px;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, gap 0.25s;
+    }
+    .submit-btn:hover {
+      background: var(--accent);
+      gap: 24px;
+    }
+    .submit-btn span { font-size: 16px; }
+
+    /* SUCCESS STATE */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 60px 0;
+    }
+    .success-message.visible { display: block; }
+    .success-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .success-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 22px;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e0dbd4;
+      background: var(--cream);
+    }
+    footer p {
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.1em;
+    }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">Giulia Zanine</a>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="#" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- LEFT -->
+    <div class="left-panel">
+      <div class="left-top fade-in">
+        <p class="eyebrow">Contact</p>
+        <h1 class="contact-heading">
+          Let's make<br>something<br><em>together.</em>
+        </h1>
+        <p class="contact-subtext">
+          Whether you have a project in mind, a question, or just want to say hello — I'd love to hear from you.
+        </p>
+      </div>
+
+      <div class="left-bottom fade-in" style="transition-delay: 0.2s">
+        <div class="contact-links">
+          <a class="contact-link-item" href="mailto:gizanine@gmail.com">
+            <div>
+              <p class="link-label">Email</p>
+              <p class="link-value">gizanine@gmail.com</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+          <a class="contact-link-item" href="https://www.linkedin.com/in/giuliazanine/" target="_blank">
+            <div>
+              <p class="link-label">LinkedIn</p>
+              <p class="link-value">Giulia Zanine</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+          <a class="contact-link-item" href="https://wa.me/351964704840" target="_blank">
+            <div>
+              <p class="link-label">WhatsApp</p>
+              <p class="link-value">+351 964 704 840</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — FORM -->
+    <div class="right-panel fade-in" style="transition-delay: 0.15s">
+      <p class="form-heading">Send a message</p>
+
+      <div id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="name" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="your@email.com" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>What are you looking for?</label>
+          <select id="subject" onchange="this.classList.add('filled')">
+            <option value="" disabled selected>Select a subject</option>
+            <option>Brand Identity</option>
+            <option>Graphic Design</option>
+            <option>Art Direction</option>
+            <option>Collaboration</option>
+            <option>Something else</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="message" placeholder="Tell me about your project…"></textarea>
+        </div>
+
+        <div class="submit-row">
+          <p class="submit-note">I'll get back to you within 2 business days.</p>
+          <button class="submit-btn" onclick="handleSubmit()">
+            Send <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="success-message" id="success">
+        <div class="success-icon">✓</div>
+        <p class="success-text">
+          Thank you for reaching out.<br>
+          I'll be in touch soon.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 Giulia Zanine</p>
+    <p>Visual identities built on restraint</p>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Form submit
+    function handleSubmit() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value || 'Portfolio inquiry';
+      const message = document.getElementById('message').value.trim();
+      if (!name || !email || !message) {
+        alert('Please fill in your name, email, and message.');
+        return;
+      }
+      const mailSubject = encodeURIComponent(`Portfolio message: ${subject}`);
+      const mailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`);
+      window.location.href = `mailto:gizanine@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success').classList.add('visible');
+    }
+  </script>
+</body>
+</html>
