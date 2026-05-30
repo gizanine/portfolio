@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freshdive - Giulia Zanine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fbfcfb;
+      --bg-2: #eef8f8;
+      --text: #101817;
+      --text-2: #5c6967;
+      --text-3: #9aa7a5;
+      --border: rgba(16,24,23,0.12);
+      --accent: #23c7cd;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(251,252,251,0.94);
+      border-bottom: 0.5px solid transparent;
+      backdrop-filter: blur(18px);
+      transition: border-color 0.4s;
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      padding: 6.5rem 4rem 0;
+      transition: color 0.25s;
+    }
+    .back-link::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 0.5px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link:hover::before { width: 46px; }
+
+    .project-hero {
+      width: 100%;
+      height: 42vh;
+      position: relative;
+      overflow: hidden;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.3s forwards;
+      background: var(--bg-2);
+    }
+    .project-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 52%;
+      display: block;
+    }
+
+    .project-body {
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 4rem;
+      border-top: 0.5px solid var(--border);
+    }
+    .body-label {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding-top: 0.25rem;
+      margin-bottom: 2rem;
+    }
+    .body-text {
+      max-width: 820px;
+      font-size: 14px;
+      line-height: 2.1;
+      color: var(--text-2);
+    }
+    .body-text h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(54px, 8vw, 118px);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+    .body-text p + p { margin-top: 1.5rem; }
+    .body-image {
+      min-height: 520px;
+      overflow: hidden;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+    }
+    .body-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2.25rem;
+    }
+    .meta span {
+      border: 0.5px solid var(--border);
+      color: var(--text-2);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+    }
+
+    .gallery {
+      padding: 0 4rem 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+    }
+    .gallery-item.full { grid-column: span 2; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .gallery-item:hover img { transform: scale(1.03); }
+    .gallery-item.tall { height: 580px; }
+    .gallery-item.short { height: 420px; }
+    .gallery-item.full { height: 640px; }
+
+    .work-cta {
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 2rem 4.5rem;
+    }
+    .view-work-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 212px;
+      min-height: 52px;
+      border: 0.5px solid var(--text);
+      color: var(--text);
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .view-work-btn:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+    footer {
+      padding: 3.25rem 4rem;
+      border-top: 0.5px solid var(--border);
+    }
+    .footer-note {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      nav { padding: 1.25rem 2rem; }
+      .back-link { padding: 5.75rem 2rem 0; }
+      .project-body { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+      .body-image { min-height: 420px; }
+      .gallery { padding: 0 2rem 3rem; gap: 1rem; }
+      .gallery-item.tall, .gallery-item.short { height: 300px; }
+      .gallery-item.full { height: 420px; }
+      .work-cta { min-height: 170px; padding: 1.5rem 2rem 3.5rem; }
+      footer { padding: 2.5rem 2rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .project-hero { height: 36vh; }
+      .gallery { grid-template-columns: 1fr; }
+      .gallery-item.full { grid-column: span 1; }
+      .body-text h1 { font-size: 54px; }
+      .body-image { min-height: 320px; }
+      .view-work-btn { width: 100%; max-width: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <a class="nav-logo" href="index.html">Giulia Zanine</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <a class="back-link" href="work.html">Back to work</a>
+
+
+  <section class="project-body">
+    <div class="body-text reveal" style="transition-delay:0.1s">
+      <div class="body-label">Overview</div>
+      <p>Freshdive is a surf and water-sports lifestyle brand built on the feeling of breaking the surface - that sharp, electric moment when cold water hits warm skin. The challenge was to capture that raw, kinetic energy in a visual identity that stays versatile across apparel, gear, and digital channels without losing its edge.</p>
+      <p>The logo leads with a cresting wave rendered in fluid, hand-crafted strokes, paired with a bold, grounded wordmark in deep black. The pairing is deliberate: the mark carries movement and optimism while the typography anchors it with confidence. Cyan and aqua tones evoke open water and clear skies without resorting to tired tropical cliches.</p>
+      <p>From wetsuit tags to social content, every touchpoint was designed for someone who lives between sessions - equally at home on the beach and in the city. Freshdive is for those who don't just surf the water, but carry that feeling everywhere they go.</p>
+    </div>
+    <div class="body-image reveal" style="transition-delay:0.2s">
+      <img src="images/6e492476-4f14-47e1-ba19-44bd4541fe95.png" alt="Freshdive storefront mockup" />
+    </div>
+  </section>
+
+  <div class="gallery">
+    <div class="gallery-item tall reveal">
+      <img src="images/5374db50-40ab-46ba-9f7b-3dd3a813435c.png" alt="Freshdive beach lifestyle products" />
+    </div>
+    <div class="gallery-item tall reveal" style="transition-delay:0.1s">
+      <img src="images/surf.png" alt="Freshdive surfboard mockup" />
+    </div>
+    <div class="gallery-item tall reveal">
+      <img src="images/9c8b1f5c-2c4b-4a2b-aee1-55d688e369ce.png" alt="Freshdive website and social media mockup" />
+    </div>
+    <div class="gallery-item tall reveal" style="transition-delay:0.1s">
+      <img src="images/a0713aa9-a238-4b5d-96a9-576b537ff773.png" alt="Freshdive apparel mockup" />
+    </div>
+  </div>
+
+  <section class="work-cta">
+    <a class="view-work-btn" href="work.html">View all work</a>
+  </section>
+
+  <footer>
+    <div class="footer-note">© 2026 Giulia Zanine</div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

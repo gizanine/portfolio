@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binge TV - Giulia Zanine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fbfaf7;
+      --bg-2: #f1e9ef;
+      --text: #11100f;
+      --text-2: #625d59;
+      --text-3: #a59d98;
+      --border: rgba(17,16,15,0.12);
+      --accent: #b58aa9;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(251,250,247,0.94);
+      border-bottom: 0.5px solid transparent;
+      backdrop-filter: blur(18px);
+      transition: border-color 0.4s;
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      padding: 6.5rem 4rem 0;
+      transition: color 0.25s;
+    }
+    .back-link::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 0.5px;
+      background: currentColor;
+      transition: width 0.3s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link:hover::before { width: 46px; }
+
+    .project-body {
+      padding: 7rem 4rem;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 4rem;
+      border-top: 0.5px solid var(--border);
+    }
+    .body-label {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding-top: 0.25rem;
+      margin-bottom: 2rem;
+    }
+    .body-text {
+      max-width: 820px;
+      font-size: 14px;
+      line-height: 2.1;
+      color: var(--text-2);
+    }
+    .body-text p + p { margin-top: 1.5rem; }
+    .body-image {
+      min-height: 520px;
+      overflow: hidden;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+    }
+    .body-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .gallery {
+      padding: 0 4rem 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      height: 720px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .gallery-item:hover img { transform: scale(1.03); }
+
+    .work-cta {
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 2rem 4.5rem;
+    }
+    .view-work-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 212px;
+      min-height: 52px;
+      border: 0.5px solid var(--text);
+      color: var(--text);
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .view-work-btn:hover { background: var(--text); color: var(--bg); }
+    footer { padding: 3.25rem 4rem; border-top: 0.5px solid var(--border); }
+    .footer-note {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      nav { padding: 1.25rem 2rem; }
+      .back-link { padding: 5.75rem 2rem 0; }
+      .project-body { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+      .body-image { min-height: 420px; }
+      .gallery { padding: 0 2rem 3rem; }
+      .gallery-item { height: 460px; }
+      .work-cta { min-height: 170px; padding: 1.5rem 2rem 3.5rem; }
+      footer { padding: 2.5rem 2rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .body-image { min-height: 320px; }
+      .gallery-item { height: 320px; }
+      .view-work-btn { width: 100%; max-width: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <a class="nav-logo" href="index.html">Giulia Zanine</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <a class="back-link" href="work.html">Back to work</a>
+
+  <section class="project-body">
+    <div class="body-text reveal" style="transition-delay:0.1s">
+      <div class="body-label">Overview</div>
+      <p>Binge TV is an editorial design project built around the energy of contemporary entertainment culture. The concept treats television not as background noise, but as a shared visual language shaped by fandom, identity, humor, and the people who make pop culture feel personal.</p>
+      <p>The cover system leans into oversized typography, soft color tension, and confident image placement to create the feeling of a collectible entertainment issue. Inside, the layout balances expressive headlines with quieter reading moments, giving interviews, features, and image-led spreads enough room to breathe.</p>
+      <p>From the cover story to the feature spread, the magazine was designed to feel polished but immediate: bold enough for a newsstand, flexible enough for recurring issues, and warm enough to invite the reader into the world of the story.</p>
+    </div>
+    <div class="body-image reveal" style="transition-delay:0.2s">
+      <img src="images/7aeb1e28-f40d-4554-8dec-6db0b68f5b0f.png" alt="Binge TV magazine cover and spread mockup" />
+    </div>
+  </section>
+
+  <div class="gallery">
+    <div class="gallery-item reveal">
+      <img src="images/72d18d41-5d80-4574-b103-0b139449984d.png" alt="Binge TV responsive website mockup" />
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.1s">
+      <img src="images/7aeb1e28-f40d-4554-8dec-6db0b68f5b0f.png" alt="Binge TV magazine cover and spread mockup" />
+    </div>
+  </div>
+
+  <section class="work-cta">
+    <a class="view-work-btn" href="work.html">View all work</a>
+  </section>
+
+  <footer>
+    <div class="footer-note">&copy; 2026 Giulia Zanine</div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
