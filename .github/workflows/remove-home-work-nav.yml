@@ -1,0 +1,33 @@
+name: Remove Home from work nav
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-home-work-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  remove-home-link:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove Home link from work page nav
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('work.html')
+          content = path.read_text(encoding='utf-8')
+          old = '      <li><a href="index.html">Home</a></li>\n'
+          if old not in content:
+              raise SystemExit('Home nav link not found in work.html')
+          path.write_text(content.replace(old, '', 1), encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work.html
+          git commit -m "Remove Home link from work navigation"
+          git push
