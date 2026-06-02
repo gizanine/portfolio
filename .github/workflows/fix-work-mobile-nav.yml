@@ -1,0 +1,73 @@
+name: Fix work page mobile nav
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-work-mobile-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-work-nav:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch only the mobile navigation CSS in work.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('work.html')
+          content = path.read_text(encoding='utf-8')
+
+          old = '''    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card .work-thumb { height: 280px !important; }
+    }'''
+
+          new = '''    @media (max-width: 600px) {
+      nav {
+        align-items: flex-start;
+        gap: 0.9rem;
+        flex-wrap: wrap;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .nav-logo {
+        flex-basis: 100%;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem 1.2rem;
+        width: 100%;
+      }
+
+      .nav-links a {
+        font-size: 9px;
+        letter-spacing: 0.16em;
+      }
+
+      .page-header {
+        padding-top: 9.75rem;
+      }
+
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card .work-thumb { height: 280px !important; }
+    }'''
+
+          if old not in content:
+            raise SystemExit('Expected mobile navigation block not found in work.html')
+
+          path.write_text(content.replace(old, new), encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work.html
+          git commit -m "Fix mobile navigation on work page"
+          git push
