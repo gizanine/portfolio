@@ -1,0 +1,153 @@
+name: Match index nav to about page
+
+on:
+  push:
+    paths:
+      - '.github/workflows/match-index-nav-about.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index-nav:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch only index navigation CSS
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          content = path.read_text(encoding='utf-8')
+
+          old_nav = '''/* ─── NAV ─────────────────────────────────────────── */
+ nav {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 2.5rem 4rem;
+ position: fixed;
+ top: 0; left: 0; right: 0;
+ z-index: 100;
+ background: var(--bg);
+ border-bottom: 0.5px solid transparent;
+ transition: border-color 0.4s;
+ }
+
+ nav.scrolled { border-bottom-color: var(--border); }
+
+ .nav-logo {
+ font-family: var(--font-serif);
+ font-size: 24px;
+ font-weight: 300;
+ line-height: 1;
+ letter-spacing: -0.01em;
+ color: var(--text);
+ text-decoration: none;
+ }
+
+ .nav-links {
+ display: flex;
+ gap: 3rem;
+ list-style: none;
+ }
+
+ .nav-links a {
+ font-size: 10px;
+ letter-spacing: 0.2em;
+ text-transform: uppercase;
+ color: var(--text-2);
+ text-decoration: none;
+ transition: color 0.25s;
+ cursor: pointer;
+ }
+
+ .nav-links a:hover { color: var(--text); }'''
+
+          new_nav = '''/* ─── NAV ─────────────────────────────────────────── */
+ nav {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 32px 60px;
+ position: fixed;
+ top: 0; left: 0; right: 0;
+ z-index: 100;
+ background: var(--bg);
+ border-bottom: 1px solid transparent;
+ transition: border-color 0.3s;
+ }
+
+ nav.scrolled { border-bottom-color: var(--border); }
+
+ .nav-logo {
+ font-family: var(--font-serif);
+ font-size: 18px;
+ font-weight: 400;
+ line-height: 1;
+ letter-spacing: 0.02em;
+ color: var(--text);
+ text-decoration: none;
+ }
+
+ .nav-links {
+ display: flex;
+ gap: 48px;
+ list-style: none;
+ }
+
+ .nav-links a {
+ font-size: 11px;
+ font-weight: 400;
+ letter-spacing: 0.18em;
+ text-transform: uppercase;
+ color: var(--text);
+ opacity: 0.7;
+ text-decoration: none;
+ transition: opacity 0.2s;
+ cursor: pointer;
+ }
+
+ .nav-links a:hover { opacity: 1; }'''
+
+          if old_nav not in content:
+              raise SystemExit('Expected index nav CSS block not found')
+          content = content.replace(old_nav, new_nav, 1)
+
+          start = content.index('@media (max-width: 600px) {')
+          end_marker = '\n </style>'
+          end = content.index(end_marker, start)
+          old_mobile = content[start:end]
+
+          new_mobile = '''@media (max-width: 600px) {
+ nav { padding: 32px 24px; }
+
+ .nav-links {
+ display: flex;
+ gap: 24px;
+ }
+
+ .nav-links a {
+ font-size: 11px;
+ font-weight: 400;
+ letter-spacing: 0.18em;
+ }
+
+ .hero { padding-top: 9rem; }
+ .hero-title { font-size: 56px; line-height: 0.96; }
+ .hero-desc { font-size: 14px; max-width: 100%; }
+ .works-grid { grid-template-columns: 1fr; }
+ .work-item:nth-child(n) .work-thumb { height: 260px; }
+}'''
+
+          content = content[:start] + new_mobile + content[end:]
+          path.write_text(content, encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Match index navigation to about page"
+          git push
