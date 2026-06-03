@@ -246,7 +246,13 @@
       footer { padding: 2.5rem 2rem; }
     }
     @media (max-width: 600px) {
-      .nav-links { display: none; }
+      nav { align-items: flex-start; gap: 1rem; }
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.85rem;
+      }
       .project-hero { height: 36vh; }
       .gallery { grid-template-columns: 1fr; }
       .gallery-item.full { grid-column: span 1; }
@@ -302,7 +308,7 @@
   </section>
 
   <footer>
-    <div class="footer-note">© 2026 Giulia Zanine</div>
+    <div class="footer-note">  2026 Giulia Zanine</div>
   </footer>
 
   <script>
