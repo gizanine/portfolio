@@ -92,8 +92,6 @@
       position: relative;
     }
 
-    .left-top {}
-
     .eyebrow {
       font-size: 10px;
       font-weight: 400;
@@ -133,9 +131,7 @@
       max-width: 380px;
     }
 
-    .left-bottom {
-      margin-top: 80px;
-    }
+    .left-bottom { margin-top: 80px; }
 
     .contact-links {
       display: flex;
@@ -258,6 +254,7 @@
       align-items: center;
       justify-content: space-between;
       margin-top: 16px;
+      gap: 24px;
     }
 
     .submit-note {
@@ -283,12 +280,17 @@
       border: none;
       cursor: pointer;
       transition: background 0.25s, gap 0.25s;
+      white-space: nowrap;
     }
     .submit-btn:hover {
       background: var(--accent);
       gap: 24px;
     }
     .submit-btn span { font-size: 16px; }
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
 
     /* SUCCESS STATE */
     .success-message {
@@ -333,6 +335,21 @@
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 32px 24px; }
+      .nav-links { gap: 24px; }
+      main { grid-template-columns: 1fr; }
+      .left-panel {
+        padding: 140px 24px 56px;
+        border-right: none;
+        border-bottom: 1px solid #e0dbd4;
+      }
+      .right-panel { padding: 64px 24px 80px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .submit-row { flex-direction: column; align-items: flex-start; }
+      footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -390,42 +407,44 @@
     <div class="right-panel fade-in" style="transition-delay: 0.15s">
       <p class="form-heading">Send a message</p>
 
-      <div id="contact-form">
+      <form id="contact-form" action="https://formspree.io/f/mrevgqkr" method="POST">
+        <input type="hidden" name="_subject" value="New portfolio inquiry from giuliazanine.com" />
+
         <div class="form-row">
           <div class="form-group">
-            <label>Name</label>
-            <input type="text" id="name" placeholder="Your name" />
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required />
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email" placeholder="your@email.com" />
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required />
           </div>
         </div>
 
         <div class="form-group">
-          <label>What are you looking for?</label>
-          <select id="subject" onchange="this.classList.add('filled')">
+          <label for="subject">What are you looking for?</label>
+          <select id="subject" name="subject" onchange="this.classList.add('filled')" required>
             <option value="" disabled selected>Select a subject</option>
-            <option>Brand Identity</option>
-            <option>Graphic Design</option>
-            <option>Art Direction</option>
-            <option>Collaboration</option>
-            <option>Something else</option>
+            <option value="Brand Identity">Brand Identity</option>
+            <option value="Graphic Design">Graphic Design</option>
+            <option value="Art Direction">Art Direction</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="Something else">Something else</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Message</label>
-          <textarea id="message" placeholder="Tell me about your project…"></textarea>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your project…" required></textarea>
         </div>
 
         <div class="submit-row">
           <p class="submit-note">I'll get back to you within 2 business days.</p>
-          <button class="submit-btn" onclick="handleSubmit()">
+          <button class="submit-btn" type="submit">
             Send <span>→</span>
           </button>
         </div>
-      </div>
+      </form>
 
       <div class="success-message" id="success">
         <div class="success-icon">✓</div>
@@ -455,22 +474,38 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Form submit
-    function handleSubmit() {
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const subject = document.getElementById('subject').value || 'Portfolio inquiry';
-      const message = document.getElementById('message').value.trim();
-      if (!name || !email || !message) {
-        alert('Please fill in your name, email, and message.');
-        return;
+    // Formspree submit
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('success');
+    const submitButton = form.querySelector('.submit-btn');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Sending <span>→</span>';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.reset();
+          form.style.display = 'none';
+          success.classList.add('visible');
+        } else {
+          alert('Something went wrong. Please try again or email me directly at gizanine@gmail.com.');
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Send <span>→</span>';
+        }
+      } catch (error) {
+        alert('Something went wrong. Please try again or email me directly at gizanine@gmail.com.');
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Send <span>→</span>';
       }
-      const mailSubject = encodeURIComponent(`Portfolio message: ${subject}`);
-      const mailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`);
-      window.location.href = `mailto:gizanine@gmail.com?subject=${mailSubject}&body=${mailBody}`;
-      document.getElementById('contact-form').style.display = 'none';
-      document.getElementById('success').classList.add('visible');
-    }
+    });
   </script>
 </body>
 </html>
