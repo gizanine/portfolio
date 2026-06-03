@@ -236,7 +236,13 @@
       footer { padding: 2.5rem 2rem; }
     }
     @media (max-width: 600px) {
-      .nav-links { display: none; }
+      nav { align-items: flex-start; gap: 1rem; }
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.85rem;
+      }
       .gallery { grid-template-columns: 1fr; }
       .gallery-item.full { grid-column: span 1; }
       .body-image { min-height: 320px; }
