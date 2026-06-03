@@ -423,6 +423,28 @@
       opacity: 1;
       transform: translateY(0);
     }
+    @media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 150px 24px 80px;
+    align-items: start;
+  }
+
+  .hero-left {
+    order: 1;
+  }
+
+  .hero-right {
+    order: 2;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .hero-image-frame {
+    max-width: 100%;
+  }
+}
   </style>
 </head>
 <body>
