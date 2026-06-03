@@ -19,6 +19,9 @@
       --text-3: #a59d98;
       --border: rgba(17,16,15,0.12);
       --accent: #c987a0;
+      --rose: #df9bb3;
+      --blush: #f6dce7;
+      --cream: #fffaf7;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Inter', system-ui, sans-serif;
     }
@@ -126,13 +129,6 @@
       background: var(--bg-2);
       border: 0.5px solid var(--border);
     }
-    .body-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
 
     .gallery {
       padding: 0 4rem 3.5rem;
@@ -147,14 +143,110 @@
       background: var(--bg-2);
       border: 0.5px solid var(--border);
     }
-    .gallery-item img {
+
+    .brand-mockup {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+      min-height: inherit;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.95) 0 8%, transparent 9%),
+        radial-gradient(circle at 78% 78%, rgba(201,135,160,0.25) 0 18%, transparent 19%),
+        linear-gradient(135deg, #fff8f6 0%, #f7dce8 44%, #d99ab3 100%);
     }
-    .gallery-item:hover img { transform: scale(1.03); }
+    .brand-mockup::before {
+      content: '';
+      position: absolute;
+      inset: 7%;
+      border: 1px solid rgba(17,16,15,0.12);
+      pointer-events: none;
+    }
+    .brand-mockup::after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -40px;
+      top: -40px;
+      border-radius: 50%;
+      border: 1px solid rgba(17,16,15,0.10);
+    }
+    .mockup-card {
+      position: relative;
+      width: min(74%, 420px);
+      min-height: 300px;
+      padding: 44px 38px;
+      background: rgba(255,250,247,0.92);
+      border: 1px solid rgba(17,16,15,0.12);
+      box-shadow: 0 24px 60px rgba(108,74,88,0.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+    }
+    .mockup-mark {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 1px solid rgba(17,16,15,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-style: italic;
+      color: var(--accent);
+      background: var(--cream);
+    }
+    .mockup-title {
+      font-family: var(--font-serif);
+      font-size: clamp(42px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 0.9;
+      color: var(--text);
+    }
+    .mockup-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .mockup-row {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .mockup-swatch {
+      flex: 1;
+      height: 38px;
+      border: 1px solid rgba(17,16,15,0.10);
+    }
+    .mockup-swatch:nth-child(1) { background: #fffaf7; }
+    .mockup-swatch:nth-child(2) { background: #f7dce8; }
+    .mockup-swatch:nth-child(3) { background: #d99ab3; }
+
+    .brand-mockup.packaging {
+      background: linear-gradient(135deg, #f7dce8 0%, #fff8f6 55%, #e6b1c3 100%);
+    }
+    .brand-mockup.packaging .mockup-card {
+      width: min(68%, 360px);
+      transform: rotate(-2deg);
+    }
+    .brand-mockup.social {
+      background: linear-gradient(135deg, #fffaf7 0%, #f3e9ee 45%, #c987a0 100%);
+    }
+    .brand-mockup.social .mockup-card {
+      min-height: 360px;
+      border-radius: 28px;
+      width: min(58%, 300px);
+    }
 
     .work-cta {
       min-height: 190px;
@@ -213,6 +305,8 @@
       .body-image { min-height: 320px; }
       .gallery { grid-template-columns: 1fr; }
       .gallery-item { min-height: 320px; }
+      .mockup-card { width: 78%; min-height: 250px; padding: 32px 24px; }
+      .mockup-title { font-size: 46px; }
       .view-work-btn { width: 100%; max-width: 240px; }
     }
   </style>
@@ -238,16 +332,39 @@
       <p>From shopping bags and tags to social content and e-commerce visuals, the system was created to support a fashion brand that feels polished, memorable, and ready for online growth.</p>
     </div>
     <div class="body-image reveal" style="transition-delay:0.2s">
-      <img src="images/work-grystore.png" alt="Gry Store boutique brand mockup" />
+      <div class="brand-mockup">
+        <div class="mockup-card">
+          <div class="mockup-mark">G</div>
+          <div class="mockup-title">Gry<br>Store</div>
+          <div class="mockup-subtitle">Feminine Boutique Identity</div>
+          <div class="mockup-row">
+            <div class="mockup-swatch"></div>
+            <div class="mockup-swatch"></div>
+            <div class="mockup-swatch"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <div class="gallery">
     <div class="gallery-item reveal">
-      <img src="images/ChatGPT Image 18 de mai. de 2026, 17_20_45 (4).png" alt="Gry Store packaging mockup" />
+      <div class="brand-mockup packaging">
+        <div class="mockup-card">
+          <div class="mockup-subtitle">Luxury Packaging</div>
+          <div class="mockup-title">Shopping<br>Bag</div>
+          <div class="mockup-mark">G</div>
+        </div>
+      </div>
     </div>
     <div class="gallery-item reveal" style="transition-delay:0.1s">
-      <img src="images/work-grystore.png" alt="Gry Store visual identity mockup" />
+      <div class="brand-mockup social">
+        <div class="mockup-card">
+          <div class="mockup-mark">G</div>
+          <div class="mockup-title">Social<br>Look</div>
+          <div class="mockup-subtitle">Instagram Visual System</div>
+        </div>
+      </div>
     </div>
   </div>
 
